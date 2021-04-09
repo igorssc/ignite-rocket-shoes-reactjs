@@ -1,3 +1,4 @@
+import React from "react";
 import {
   MdDelete,
   MdAddCircleOutline,
@@ -22,9 +23,8 @@ const Cart = (): JSX.Element => {
   const cartFormatted = cart.map((product) => ({
     ...product,
     priceFormatted: formatPrice(product.price),
-    subtotal: formatPrice(product.price * product.amount),
+    subTotal: formatPrice(product.price * product.amount),
   }));
-
   const total = formatPrice(
     cart.reduce((sumTotal, product) => {
       return sumTotal + product.price * product.amount;
@@ -32,11 +32,17 @@ const Cart = (): JSX.Element => {
   );
 
   function handleProductIncrement(product: Product) {
-    updateProductAmount({ productId: product.id, amount: product.amount + 1 });
+    updateProductAmount({
+      productId: product.id,
+      amount: product.amount + 1,
+    });
   }
 
   function handleProductDecrement(product: Product) {
-    updateProductAmount({ productId: product.id, amount: product.amount - 1 });
+    updateProductAmount({
+      productId: product.id,
+      amount: product.amount - 1,
+    });
   }
 
   function handleRemoveProduct(productId: number) {
@@ -57,7 +63,7 @@ const Cart = (): JSX.Element => {
         </thead>
         <tbody>
           {cartFormatted.map((product) => (
-            <tr key={product.id}>
+            <tr data-testid="product" key={product.id}>
               <td>
                 <img src={product.image} alt={product.title} />
               </td>
@@ -91,7 +97,7 @@ const Cart = (): JSX.Element => {
                 </div>
               </td>
               <td>
-                <strong>{product.amount}</strong>
+                <strong>{product.subTotal}</strong>
               </td>
               <td>
                 <button
